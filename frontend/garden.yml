@@ -1,0 +1,66 @@
+kind: Build
+name: frontend
+type: container
+description: Build the frontend image
+spec:
+  targetStage: development
+
+---
+kind: Deploy
+name: frontend
+type: kubernetes
+description: Deploy the frontend
+dependencies:
+  - build.frontend
+  - deploy.bff
+spec:
+  manifestFiles: [./manifests/*]
+  defaultTarget:
+    kind: Deployment
+    name: frontend
+  patchResources:
+    - kind: Deployment
+      name: frontend
+      patch:
+        spec:
+          template:
+            spec:
+              containers:
+                - name: frontend
+                  image: ${actions.build.frontend.outputs.deploymentImageId}
+    - kind: Ingress
+      name: frontend
+      patch:
+        spec:
+          ingressClassName: nginx
+          rules:
+            - host: ${var.hostname}
+              http:
+                paths:
+                  - backend:
+                      service:
+                        name: frontend
+                        port:
+                          number: 3000
+                    path: /
+                    pathType: Prefix
+                  - backend:
+                      service:
+                        name: bff
+                        port:
+                          number: 8001
+                    path: /api
+                    pathType: Prefix
+  sync:
+    paths:
+      - sourcePath: src
+        containerPath: /app/src
+        mode: one-way-replica
+        exclude: [node_modules, dist]
+    overrides:
+      - command: [npm, run, dev]
+  portForwards:
+    - name: http
+      resource: Service/frontend
+      targetPort: 3000
+      localPort: 3000
