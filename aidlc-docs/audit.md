@@ -307,3 +307,99 @@
 **Context**: CONSTRUCTION - Infrastructure Design (Unit 1: Backend API) - rev.2 with persistence + seed
 
 ---
+
+## CONSTRUCTION - Infrastructure Design (Unit 1: Backend API) - User Approval
+**Timestamp**: 2026-06-30T17:22:04Z
+**User Input**: "Continuar con el siguiente stage"
+**AI Response**: "Infrastructure Design del Backend API aprobado. Procediendo a Code Generation (Unit 1: Backend API)."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 1: Backend API) APPROVED. Next: Code Generation (Unit 1: Backend API)
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 1: Backend API) - Plan Created
+**Timestamp**: 2026-06-30T17:22:30Z
+**User Input**: N/A (awaiting approval of plan)
+**AI Response**: "Plan de Code Generation creado para Backend API: 12 steps covering project setup, core module, models, schemas, repositories, services, routers, seed script, infra files, unit tests, project-level files, and documentation summary. Total ~35 files to generate."
+**Context**: CONSTRUCTION - Code Generation (Unit 1: Backend API) - Part 1 (Planning), awaiting approval
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 1: Backend API) - Plan Approved
+**Timestamp**: 2026-06-30T17:24:42Z
+**User Input**: "Aprobar y empezar con la generación"
+**AI Response**: "Plan aprobado. Iniciando Part 2: Generation — Step 1: Project Structure Setup."
+**Context**: CONSTRUCTION - Code Generation (Unit 1: Backend API) - Part 1 APPROVED. Starting Part 2.
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 1: Backend API) - Complete
+**Timestamp**: 2026-06-30T17:25:00Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Code Generation completada para Backend API. 35 archivos Python generados + 4 infra + 2 project-level. Syntax verificada. Plan 12/12 steps [x]. Presentado para aprobación."
+**Context**: CONSTRUCTION - Code Generation (Unit 1: Backend API) - COMPLETE, awaiting approval
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 1: Backend API) - User Approval
+**Timestamp**: 2026-06-30T17:51:26Z
+**User Input**: "Continuar con el siguente stage"
+**AI Response**: "Code Generation del Backend API aprobado. Procediendo a Functional Design (Unit 2: BFF)."
+**Context**: CONSTRUCTION - Code Generation (Unit 1: Backend API) APPROVED. Next: Functional Design (Unit 2: BFF)
+
+---
+
+## CONSTRUCTION - Functional Design (Unit 2: BFF) - Complete
+**Timestamp**: 2026-06-30T17:52:00Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Functional Design del BFF generado: business-logic-model.md (auth flows, proxy rules, endpoint mapping, JWT validation), business-rules.md (6 rule sets), domain-entities.md (BFF types, no DB). BFF es thin proxy — sin preguntas adicionales necesarias."
+**Context**: CONSTRUCTION - Functional Design (Unit 2: BFF) - COMPLETE, awaiting approval
+
+---
+
+## CONSTRUCTION - Functional Design (Unit 2: BFF) - User Approval
+**Timestamp**: 2026-06-30T17:54:06Z
+**User Input**: "Continuar con el siguiente stage"
+**AI Response**: "Functional Design del BFF aprobado. Procediendo a Infrastructure Design (Unit 2: BFF)."
+**Context**: CONSTRUCTION - Functional Design (Unit 2: BFF) APPROVED. Next: Infrastructure Design (Unit 2: BFF)
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 2: BFF) - Complete
+**Timestamp**: 2026-06-30T17:54:30Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Infrastructure Design del BFF generado: Dockerfile, K8s manifests (deployment.yml port 8001 + service.yml), garden.yml (build+deploy depends on backend + sync + test), requirements (httpx como client), file structure completa."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 2: BFF) - COMPLETE, awaiting approval
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 2: BFF) - User Approval
+**Timestamp**: 2026-06-30T19:07:43Z
+**User Input**: "Continuar con el siguiente stage"
+**AI Response**: "Infrastructure Design del BFF aprobado. Procediendo a Code Generation (Unit 2: BFF)."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 2: BFF) APPROVED. Next: Code Generation (Unit 2: BFF)
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 2: BFF) - Complete
+**Timestamp**: 2026-06-30T19:08:00Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Code Generation del BFF completada. 15 archivos Python + 4 infra generados. Syntax verificada. Tests pasan. Presentado para aprobación."
+**Context**: CONSTRUCTION - Code Generation (Unit 2: BFF) - COMPLETE, awaiting approval
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 2: BFF) - User Approval
+**Timestamp**: 2026-06-30T19:41:24Z
+**User Input**: "Continuar y pasar al siguiente stage"
+**AI Response**: "Code Generation del BFF aprobado. Procediendo a Functional Design (Unit 3: Frontend)."
+**Context**: CONSTRUCTION - Code Generation (Unit 2: BFF) APPROVED. Next: Functional Design (Unit 3: Frontend)
+
+---
+
+## CONSTRUCTION - Functional Design (Unit 3: Frontend) - Complete
+**Timestamp**: 2026-06-30T19:42:00Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Functional Design del Frontend generado: frontend-components.md con page map (10 routes), component hierarchy, 4 features (auth, catalog, publishing, adoption), shared components, API service design, form validations, y data-testid specifications. Sin preguntas adicionales — decisions de organización (por feature) y state management (hooks nativos) ya fueron tomadas en Application Design."
+**Context**: CONSTRUCTION - Functional Design (Unit 3: Frontend) - COMPLETE, awaiting approval
+
+---

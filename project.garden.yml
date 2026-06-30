@@ -1,0 +1,63 @@
+apiVersion: garden.io/v2
+kind: Project
+name: dog-keeper
+defaultEnvironment: local
+dotIgnoreFile: .gitignore
+
+variables:
+  postgresUsername: postgres
+  postgresDatabase: dog_keeper_db
+  postgresPassword: password
+  userNamespace: dog-keeper-${kebabCase(local.username)}
+
+environments:
+  - name: local
+    defaultNamespace: ${var.userNamespace}
+    variables:
+      baseHostname: local.app.garden
+      hostname: dog-keeper.${var.baseHostname}
+
+providers:
+  - name: container
+    gardenContainerBuilder:
+      enabled: false
+  - name: local-kubernetes
+    environments: [local]
+    namespace: ${environment.namespace}
+    defaultHostname: ${var.baseHostname}
+    buildMode: local-docker
+    setupIngressController: nginx
+    context: minikube
+
+---
+kind: Deploy
+name: db
+type: helm
+description: Deploy a PostgreSQL database for local development
+spec:
+  chart:
+    name: postgresql
+    repo: https://charts.bitnami.com/bitnami
+    version: "15.5.21"
+  values:
+    fullnameOverride: db
+    image:
+      registry: docker.io
+      repository: bitnami/postgresql
+      tag: 16.3.0-debian-12-r23
+      pullPolicy: IfNotPresent
+    auth:
+      username: ${var.postgresUsername}
+      database: ${var.postgresDatabase}
+      postgresPassword: ${var.postgresPassword}
+    primary:
+      persistence:
+        enabled: true
+        size: 1Gi
+      resources:
+        limits:
+          memory: 512Mi
+          cpu: 500m
+        requests:
+          memory: 256Mi
+          cpu: 100m

@@ -1,0 +1,54 @@
+kind: Build
+name: backend
+type: container
+description: Build the backend API image
+
+---
+kind: Deploy
+name: backend
+type: kubernetes
+description: Deploy the backend API
+dependencies:
+  - build.backend
+  - deploy.db
+spec:
+  manifestFiles: [./manifests/*]
+  defaultTarget:
+    kind: Deployment
+    name: backend
+  patchResources:
+    - kind: Deployment
+      name: backend
+      patch:
+        spec:
+          template:
+            spec:
+              containers:
+                - name: backend
+                  image: ${actions.build.backend.outputs.deploymentImageId}
+  sync:
+    paths:
+      - sourcePath: .
+        containerPath: /app
+        mode: one-way-replica
+        exclude: [.venv, __pycache__, '*.pyc', .pytest_cache, tests]
+    overrides:
+      - command:
+          - /bin/sh
+          - -c
+          - >-
+            watchmedo auto-restart
+            --directory=/app
+            --pattern='*.py'
+            --recursive
+            -- uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+---
+kind: Test
+name: unit-backend
+type: container
+description: Unit test the backend API
+dependencies: [build.backend]
+spec:
+  image: ${actions.build.backend.outputs.deploymentImageId}
+  args: ["/bin/sh", "-c", "pip install -r requirements-dev.txt && python -m pytest -v"]

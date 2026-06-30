@@ -66,3 +66,14 @@ temp/
 *.so
 *.dylib
 *.bin
+
+# Python
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Garden
+.garden/

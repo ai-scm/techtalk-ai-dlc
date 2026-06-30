@@ -1,0 +1,54 @@
+kind: Build
+name: bff
+type: container
+description: Build the BFF image
+
+---
+kind: Deploy
+name: bff
+type: kubernetes
+description: Deploy the BFF
+dependencies:
+  - build.bff
+  - deploy.backend
+spec:
+  manifestFiles: [./manifests/*]
+  defaultTarget:
+    kind: Deployment
+    name: bff
+  patchResources:
+    - kind: Deployment
+      name: bff
+      patch:
+        spec:
+          template:
+            spec:
+              containers:
+                - name: bff
+                  image: ${actions.build.bff.outputs.deploymentImageId}
+  sync:
+    paths:
+      - sourcePath: .
+        containerPath: /app
+        mode: one-way-replica
+        exclude: [.venv, __pycache__, "*.pyc", .pytest_cache, tests]
+    overrides:
+      - command:
+          - /bin/sh
+          - -c
+          - >-
+            watchmedo auto-restart
+            --directory=/app
+            --pattern='*.py'
+            --recursive
+            -- uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+
+---
+kind: Test
+name: unit-bff
+type: container
+description: Unit test the BFF
+dependencies: [build.bff]
+spec:
+  image: ${actions.build.bff.outputs.deploymentImageId}
+  args: ["/bin/sh", "-c", "pip install -r requirements-dev.txt && python -m pytest -v"]
