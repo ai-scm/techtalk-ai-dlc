@@ -251,3 +251,59 @@
 **Context**: INCEPTION - Units Generation APPROVED. INCEPTION PHASE COMPLETE. Next: CONSTRUCTION - Functional Design (Unit 1: Backend API)
 
 ---
+
+## Session Resumption
+**Timestamp**: 2026-06-30T16:50:07Z
+**User Input**: "AI-DLC inicio"
+**AI Response**: "Sesión resumida. INCEPTION PHASE completada. Continuando en CONSTRUCTION PHASE — Functional Design para Unit 1: Backend API."
+**Context**: Session resume — CONSTRUCTION PHASE starting
+
+---
+
+## CONSTRUCTION - Functional Design (Unit 1: Backend API) - Start
+**Timestamp**: 2026-06-30T16:51:41Z
+**User Input**: "Si procedamos con el diseño funcional del backend"
+**AI Response**: "Iniciando Functional Design para Unit 1: Backend API. Analizando contexto de la unidad y generando artefactos de diseño funcional."
+**Context**: CONSTRUCTION - Functional Design (Unit 1: Backend API) - Starting
+
+---
+
+## CONSTRUCTION - Functional Design (Unit 1: Backend API) - Artifacts Generated
+**Timestamp**: 2026-06-30T16:52:00Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Functional Design para Backend API generado: domain-entities.md (4 tablas SQL con indexes y constraints), business-rules.md (12 conjuntos de reglas BR-01 a BR-12), business-logic-model.md (lógica detallada de todos los métodos de AuthService, PetService y AdoptionService con pre/postcondiciones). No se generaron preguntas adicionales ya que todas las decisiones fueron tomadas durante INCEPTION."
+**Context**: CONSTRUCTION - Functional Design (Unit 1: Backend API) - COMPLETE, awaiting approval
+
+---
+
+## CONSTRUCTION - Functional Design (Unit 1: Backend API) - User Approval
+**Timestamp**: 2026-06-30T16:55:46Z
+**User Input**: "Aprobar y continuar"
+**AI Response**: "Functional Design del Backend API aprobado. Procediendo a Infrastructure Design (Unit 1: Backend API)."
+**Context**: CONSTRUCTION - Functional Design (Unit 1: Backend API) APPROVED. Next: Infrastructure Design (Unit 1: Backend API)
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 1: Backend API) - Artifacts Generated
+**Timestamp**: 2026-06-30T16:56:00Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Infrastructure Design para Backend API generado: infrastructure-design.md (Dockerfile, K8s manifests, garden.yml completo, PostgreSQL Helm, env vars, dependencies) y deployment-architecture.md (local dev topology, Garden DAG, build pipeline, DB lifecycle). No se generaron preguntas ya que las decisiones de infra local están completamente definidas en los steering docs."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 1: Backend API) - COMPLETE, awaiting approval
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 1: Backend API) - Change Request
+**Timestamp**: 2026-06-30T17:18:40Z
+**User Input**: "Requiero cambios y claridades, dice que la base en local sera desplegada de forma efimera, pero en realidad puede ser que sea util tener una base datos que perdure para el desarrollo en local , o tal vez un script con datos de prueba de manera que cada vez que se abra esta ya esta populada de algo para no iniciar desde 0 en el desarrollo local, es eso posible o de que manera se piensa manejar ?"
+**AI Response**: "Buena observación. Ambas opciones son viables con Garden/K8s local. Propongo dos mecanismos complementarios: (1) habilitar persistencia en PostgreSQL con un PVC, y (2) un seed script que popula datos de prueba al iniciar. Actualizando diseño."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 1: Backend API) - CHANGE REQUESTED (DB persistence + seed data)
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 1: Backend API) - Changes Applied
+**Timestamp**: 2026-06-30T17:19:00Z
+**User Input**: N/A (changes applied, re-presenting for approval)
+**AI Response**: "Diseño actualizado: (1) PostgreSQL con persistence.enabled=true + PVC 1Gi — datos sobreviven restarts. (2) Seed script idempotente que popula DB con datos de prueba (5 users, 8 pets, 12 fotos, 10 solicitudes) cuando está vacía. Se ejecuta automáticamente en startup."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 1: Backend API) - rev.2 with persistence + seed
+
+---

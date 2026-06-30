@@ -3,8 +3,8 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-06-21T00:00:00Z
-- **Current Stage**: CONSTRUCTION - Functional Design (Unit 1: Backend API)
-- **Next Stage**: Functional Design (Unit 1: Backend API)
+- **Current Stage**: CONSTRUCTION - Infrastructure Design (Unit 1: Backend API)
+- **Next Stage**: Infrastructure Design (Unit 1: Backend API)
 
 ## Workspace State
 - **Existing Code**: No
@@ -40,7 +40,7 @@ AI-DLC Discovery (sample-aidlc-discovery v2) se ejecutó y produjo los insumos c
 
 ### 🟢 CONSTRUCTION PHASE (per-unit)
 - [ ] **Unit 1: Backend API**
-  - [ ] Functional Design
+  - [x] Functional Design (Approved 2026-06-30)
   - [ ] Infrastructure Design
   - [ ] Code Generation
 - [ ] **Unit 2: BFF**
