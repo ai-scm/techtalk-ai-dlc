@@ -3,12 +3,13 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-06-21T00:00:00Z
-- **Current Stage**: INCEPTION - Requirements Analysis (pending, fed by Discovery)
+- **Current Stage**: CONSTRUCTION - Functional Design (Unit 1: Backend API)
+- **Next Stage**: Functional Design (Unit 1: Backend API)
 
 ## Workspace State
 - **Existing Code**: No
 - **Reverse Engineering Needed**: No
-- **Workspace Root**: /home/blend-pc-juan/Documentos/Componentes Blend/techtalk-ai-dlc
+- **Workspace Root**: /home/nuvu/Documents/arch/varios/techtalks/techtalk-ai-dlc
 
 ## Code Location Rules
 - **Application Code**: Workspace root (NEVER in aidlc-docs/)
@@ -21,9 +22,46 @@ AI-DLC Discovery (sample-aidlc-discovery v2) se ejecutó y produjo los insumos c
 - `Product-Definition/technical-environment.md`
 - `Product-Definition/open-questions.md` (4 preguntas pre-declaradas, todas resueltas)
 
-El cuestionario previo `aidlc-docs/inception/requirements/requirement-verification-questions.md` fue
-eliminado por quedar obsoleto: Requirements Analysis debe alimentarse de `Product-Definition/`.
+## Execution Plan Summary
+- **Total Stages to Execute**: 6 (Application Design, Units Generation, Functional Design, Infrastructure Design, Code Generation, Build and Test)
+- **Stages Skipped**: 3 (Reverse Engineering, NFR Requirements, NFR Design)
+- **Risk Level**: Low
+- **Next Stage**: Application Design
 
 ## Stage Progress
-- [x] INCEPTION - Workspace Detection (Complete - Greenfield)
-- [ ] INCEPTION - Requirements Analysis (pending; usar Product-Definition/ como entrada)
+
+### 🔵 INCEPTION PHASE
+- [x] Workspace Detection (Complete - Greenfield)
+- [x] Requirements Analysis (Complete - Approved 2026-06-30)
+- [x] User Stories (Complete - Approved 2026-06-30)
+- [x] Workflow Planning (Complete - Approved 2026-06-30)
+- [x] Application Design - COMPLETE (Approved 2026-06-30, rev.2 with BFF)
+- [x] Units Generation - COMPLETE (Approved 2026-06-30)
+
+### 🟢 CONSTRUCTION PHASE (per-unit)
+- [ ] **Unit 1: Backend API**
+  - [ ] Functional Design
+  - [ ] Infrastructure Design
+  - [ ] Code Generation
+- [ ] **Unit 2: BFF**
+  - [ ] Functional Design
+  - [ ] Infrastructure Design
+  - [ ] Code Generation
+- [ ] **Unit 3: Frontend**
+  - [ ] Functional Design
+  - [ ] Infrastructure Design
+  - [ ] Code Generation
+- [ ] **Unit 4: Infrastructure (AWS CDK)**
+  - [ ] Infrastructure Design
+  - [ ] Code Generation
+- [ ] Build and Test
+
+### 🟡 OPERATIONS PHASE
+- [ ] Operations - PLACEHOLDER
+
+## Extension Configuration
+| Extension | Enabled | Decided At |
+|---|---|---|
+| Security Baseline | No | Requirements Analysis |
+| Resiliency Baseline | No | Requirements Analysis |
+| Property-Based Testing | Partial (funciones puras y serialización) | Requirements Analysis |

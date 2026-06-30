@@ -31,3 +31,223 @@
 **Context**: INCEPTION - Requirements source switched to Discovery outputs
 
 ---
+
+## Requirements Analysis - Session Resumption
+**Timestamp**: 2026-06-30T04:08:50Z
+**User Input**: "Using AI-DLC, start Requirements Analysis for this product. Before anything else, load these inputs from Product-Definition/: vision-document.md — business vision: problem, target users, success metrics, MVP scope (IN/OUT), risks. technical-environment.md — technical constraints: languages, frameworks, cloud, architecture, security, testing. open-questions.md — 4 pre-declared ambiguities (all already resolved during discovery); review their resolutions before User Stories or Application Design. Treat the MVP "Features IN" list as the scope boundary. Honour the allow/deny lists in technical-environment.md as constraints, not suggestions."
+**AI Response**: "Cargados los 3 documentos de Product-Definition. Todas las Open Questions (4) están resueltas. Ejecutando Intent Analysis y generando preguntas de verificación."
+**Context**: INCEPTION - Requirements Analysis (using Discovery outputs as input)
+
+---
+
+## Requirements Analysis - User Answers Received
+**Timestamp**: 2026-06-30T04:20:47Z
+**User Input**: "listo"
+**AI Response**: "Leídas las 13 respuestas del usuario en requirement-verification-questions.md. Sin contradicciones ni ambigüedades detectadas. Procediendo a generar requirements.md."
+**Context**: INCEPTION - Requirements Analysis (GATE passed)
+
+### Answers Summary:
+- Q1: A (Best-effort, sin SLA formal)
+- Q2: A (Bajo, <50 concurrentes)
+- Q3: A (Relajado, hasta 5s)
+- Q4: A (Max 3 fotos, 5MB, JPG/PNG)
+- Q5: B (Email + teléfono del adoptante al publicador)
+- Q6: B (Max 3 solicitudes activas simultáneas)
+- Q7: B (Quedan en espera / lista de espera)
+- Q8: A (Una cuenta = un usuario por fundación en POC)
+- Q9: A (Eliminar cuenta elimina publicaciones y cancela solicitudes)
+- Q10: A (Mínimo, >60% unitaria en lógica crítica)
+- Q11: B (No Security Baseline)
+- Q12: B (No Resiliency Baseline)
+- Q13: B (PBT parcial — funciones puras y serialización)
+
+---
+
+## Requirements Analysis - Completion & Approval Prompt
+**Timestamp**: 2026-06-30T04:21:00Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Requirements Analysis completado. Generado requirements.md con 10 FR, 5 NFR, modelo de datos conceptual, access patterns DynamoDB, restricciones técnicas, límites de alcance, métricas de éxito y configuración de extensiones. Presentado para aprobación."
+**Context**: INCEPTION - Requirements Analysis (COMPLETE, awaiting user approval)
+
+---
+
+## Requirements Analysis - User Approval
+**Timestamp**: 2026-06-30T04:26:46Z
+**User Input**: "Aprovar y continuar"
+**AI Response**: "Requirements Analysis aprobado. Procediendo a User Stories."
+**Context**: INCEPTION - Requirements Analysis APPROVED. Next: User Stories.
+
+---
+
+## User Stories - Planning: User Answers Received
+**Timestamp**: 2026-06-30T04:37:32Z
+**User Input**: "listo"
+**AI Response**: "Leídas las 7 respuestas del usuario en story-generation-plan.md. Sin contradicciones ni ambigüedades. Solicitando aprobación del plan."
+**Context**: INCEPTION - User Stories Part 1 (Planning - answers collected)
+
+### Answers Summary:
+- Q1: B (Feature-Based)
+- Q2: B (Medias, ~20-25 historias)
+- Q3: C (Mixto — GWT para flujos principales, checklist para validaciones)
+- Q4: A (MoSCoW)
+- Q5: A (Personas mínimas)
+- Q6: B (Edge cases en criterios de aceptación, no historias separadas)
+- Q7: A (Español)
+
+---
+
+## User Stories - Plan Approval
+**Timestamp**: 2026-06-30T04:39:20Z
+**User Input**: "Si , apruebo"
+**AI Response**: "Plan aprobado. Procediendo a Part 2: Generation — generando personas.md y stories.md."
+**Context**: INCEPTION - User Stories Part 1 (Planning APPROVED). Proceeding to Part 2.
+
+---
+
+## User Stories - Generation Complete
+**Timestamp**: 2026-06-30T04:39:45Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "User Stories generadas: 3 personas + 22 historias organizadas por feature con MoSCoW y ACs mixtos. Presentado para aprobación final."
+**Context**: INCEPTION - User Stories Part 2 (Generation COMPLETE, awaiting approval)
+
+---
+
+## User Stories - User Approval
+**Timestamp**: 2026-06-30T04:49:48Z
+**User Input**: "Aprovar y continuar"
+**AI Response**: "User Stories aprobadas. Procediendo a Workflow Planning."
+**Context**: INCEPTION - User Stories APPROVED. Next: Workflow Planning.
+
+---
+
+## Workflow Planning - Execution Plan Complete
+**Timestamp**: 2026-06-30T04:50:00Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Execution plan generado. 6 stages a ejecutar, 3 skipped. Risk: Low. Presentado para aprobación."
+**Context**: INCEPTION - Workflow Planning (COMPLETE, awaiting user approval)
+
+---
+
+## Workflow Planning - User Approval
+**Timestamp**: 2026-06-30T04:52:52Z
+**User Input**: "Aprovar y continuar"
+**AI Response**: "Workflow Planning aprobado. Procediendo a Application Design."
+**Context**: INCEPTION - Workflow Planning APPROVED. Next: Application Design.
+
+---
+
+## Application Design - User Answers Received
+**Timestamp**: 2026-06-30T05:12:40Z
+**User Input**: "listo"
+**AI Response**: "Leídas las 6 respuestas. Q5 y Q6 introducen cambios significativos vs technical-environment.md (PostgreSQL en lugar de S3/DynamoDB/Cognito). Creando preguntas de clarificación."
+**Context**: INCEPTION - Application Design (answers received, contradictions detected with tech constraints)
+
+### Answers:
+- Q1: A (Tres capas: Routers → Services → Repositories)
+- Q2: A (Routers por entidad)
+- Q3: A (React hooks nativos)
+- Q4: A (Por feature)
+- Q5: X (Guardar imágenes en PostgreSQL, no S3)
+- Q6: X (Auth propio con tabla de permisos en PostgreSQL, no Cognito; login con email+password)
+
+### Contradictions Detected:
+- Q5 contradice technical-environment.md: "Amazon S3 — Almacenamiento de imágenes de mascotas"
+- Q6 contradice technical-environment.md: "Amazon Cognito — Autenticación y gestión de roles de usuario"
+- Q5+Q6 implican PostgreSQL como DB principal en lugar de DynamoDB (contradicción con tech constraints)
+
+---
+
+## Application Design - Clarification Answers Received
+**Timestamp**: 2026-06-30T05:16:13Z
+**User Input**: "listo"
+**AI Response**: "Clarificaciones resueltas. Arquitectura revisada: PostgreSQL como DB principal (SQLAlchemy), imágenes como bytea en PostgreSQL, auth propio (bcrypt + JWT). Se eliminan DynamoDB, S3 y Cognito del stack. Procediendo a generar artefactos de diseño."
+**Context**: INCEPTION - Application Design (clarifications resolved, architecture pivot confirmed)
+
+### Clarification Answers:
+- CQ1: A (PostgreSQL reemplaza DynamoDB como DB principal, SQLAlchemy como ORM)
+- CQ2: A (Imágenes como bytea en PostgreSQL, sin S3)
+- CQ3: A (Auth propio: bcrypt + JWT, sin Cognito)
+
+### Technical Stack Update (overrides technical-environment.md):
+- ❌ Amazon DynamoDB → ✅ PostgreSQL (RDS o local)
+- ❌ Amazon S3 → ✅ PostgreSQL bytea
+- ❌ Amazon Cognito → ✅ Auth propio (bcrypt + JWT)
+- ❌ GSIs / access patterns → ✅ SQL queries + indexes
+- ✅ Se mantienen: FastAPI, Lambda, API Gateway, CDK, React, TypeScript, Tailwind
+
+---
+
+## Application Design - Artifacts Generated
+**Timestamp**: 2026-06-30T05:16:30Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Application Design artifacts generados: components.md, component-methods.md, services.md, component-dependency.md, application-design.md. Arquitectura revisada: PostgreSQL (bytea), auth propio (bcrypt+JWT), 3 capas backend, React hooks nativos, features-based frontend."
+**Context**: INCEPTION - Application Design (COMPLETE, awaiting user approval)
+
+---
+
+## Application Design - Change Request
+**Timestamp**: 2026-06-30T05:23:00Z
+**User Input**: "Pedir cambios : Como se especifico en el documento, deseo que el login y la redireccion sea administrada por el bff o backend for frontend y que el frontend no realice las peticiones directamente a el backend , sino que este solo se comunique con el bff"
+**AI Response**: "Entendido. Se introduce un BFF (Backend For Frontend) entre el Frontend y el Backend API. El Frontend solo habla con el BFF; el BFF maneja autenticación/redirección y proxea requests al Backend. Actualizando artefactos de diseño."
+**Context**: INCEPTION - Application Design (CHANGE REQUESTED - introduce BFF layer)
+
+---
+
+## Application Design - Changes Applied (BFF)
+**Timestamp**: 2026-06-30T05:23:30Z
+**User Input**: N/A (changes applied, re-presenting for approval)
+**AI Response**: "Diseño actualizado: BFF (FastAPI, port 8001) introducido entre Frontend y Backend. Frontend solo habla con BFF. BFF gestiona login/registro, proxy de requests, validación de sesión. 5 artefactos actualizados a rev. 2."
+**Context**: INCEPTION - Application Design (rev. 2 with BFF, awaiting re-approval)
+
+---
+
+## Application Design - User Approval
+**Timestamp**: 2026-06-30T05:27:43Z
+**User Input**: "Aprobar y continuar"
+**AI Response**: "Application Design aprobado (rev. 2 con BFF). Procediendo a Units Generation."
+**Context**: INCEPTION - Application Design APPROVED. Next: Units Generation.
+
+---
+
+## Units Generation - User Answers Received
+**Timestamp**: 2026-06-30T05:32:53Z
+**User Input**: "listo"
+**AI Response**: "Leídas las 3 respuestas. Q2 es X con explicación clara: desarrollo local con Garden/K8s primero (cada unidad incluye Dockerfile + manifests + garden.yml), luego AWS CDK para cloud. Sin ambigüedades. Procediendo a generar artefactos."
+**Context**: INCEPTION - Units Generation (answers collected, no ambiguities)
+
+### Answers:
+- Q1: A (4 unidades: Backend, BFF, Frontend, Infra)
+- Q2: X (Backend→BFF→Frontend con Garden/K8s local para dev; luego Infra AWS CDK para cloud deploy)
+- Q3: A (Flat: /backend/, /bff/, /frontend/, /infra/)
+
+### Interpretation of Q2:
+- Each unit (Backend, BFF, Frontend) includes its own Dockerfile, K8s manifests, and garden.yml for local development with Garden.io + Minikube (as defined in steering docs)
+- A project-level project.garden.yml orchestrates local dev
+- The "Infra" unit = AWS CDK for cloud deployment (RDS, Lambda, API GW, etc.) and comes LAST
+- Development order: Backend → BFF → Frontend → Infra(AWS)
+
+---
+
+## Units Generation - Plan Approval
+**Timestamp**: 2026-06-30T05:34:04Z
+**User Input**: "Si"
+**AI Response**: "Plan aprobado. Procediendo a Part 2: Generation — generando unit-of-work.md, dependency y story-map."
+**Context**: INCEPTION - Units Generation Part 1 (Planning APPROVED). Proceeding to Part 2.
+
+---
+
+## Units Generation - Artifacts Generated
+**Timestamp**: 2026-06-30T05:34:30Z
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Units Generation artefactos generados: unit-of-work.md (4 units con estructura de directorios y Garden config), unit-of-work-dependency.md (cadena de dependencias + Garden DAG + development order), unit-of-work-story-map.md (22 stories mapeadas a 4 units). Presentado para aprobación."
+**Context**: INCEPTION - Units Generation (COMPLETE, awaiting user approval)
+
+---
+
+## Units Generation - User Approval
+**Timestamp**: 2026-06-30T05:37:03Z
+**User Input**: "Aprobar y continuar"
+**AI Response**: "Units Generation aprobado. INCEPTION PHASE COMPLETE. Procediendo a CONSTRUCTION PHASE — Functional Design para Unit 1: Backend API."
+**Context**: INCEPTION - Units Generation APPROVED. INCEPTION PHASE COMPLETE. Next: CONSTRUCTION - Functional Design (Unit 1: Backend API)
+
+---
