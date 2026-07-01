@@ -27,7 +27,7 @@ from services.auth_service import get_current_user
 router = APIRouter(prefix="/pets", tags=["Pets"])
 
 
-@router.get("/", response_model=PaginatedResponse[PetResponse])
+@router.get("", response_model=PaginatedResponse[PetResponse])
 def list_pets(
     species: str | None = None,
     location: str | None = None,
@@ -60,7 +60,7 @@ def get_pet(pet_id: UUID, db: Session = Depends(get_db)) -> PetDetailResponse:
     return pet_service.get_pet(db, pet_id)
 
 
-@router.post("/", response_model=PetResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=PetResponse, status_code=status.HTTP_201_CREATED)
 def create_pet(
     data: CreatePetRequest,
     current_user: User = Depends(get_current_user),

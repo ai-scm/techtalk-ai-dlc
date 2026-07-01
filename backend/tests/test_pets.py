@@ -27,7 +27,7 @@ def _create_pet(client: TestClient, headers: dict, **overrides: object) -> dict:
         "description": "A lovely test pet",
     }
     data.update(overrides)
-    resp = client.post("/pets/", json=data, headers=headers)
+    resp = client.post("/pets", json=data, headers=headers)
     assert resp.status_code == 201, f"Failed to create pet: {resp.text}"
     return resp.json()
 
@@ -48,7 +48,7 @@ class TestCreatePet:
             "health_status": "Vaccinated",
             "description": "Friendly puppy looking for home",
         }
-        resp = client.post("/pets/", json=data, headers=sample_publisher["headers"])
+        resp = client.post("/pets", json=data, headers=sample_publisher["headers"])
 
         assert resp.status_code == 201
         body = resp.json()
@@ -75,7 +75,7 @@ class TestCreatePet:
             "health_status": "Healthy",
             "description": "Should not be created",
         }
-        resp = client.post("/pets/", json=data, headers=sample_adopter["headers"])
+        resp = client.post("/pets", json=data, headers=sample_adopter["headers"])
         assert resp.status_code == 403
 
 
@@ -90,7 +90,7 @@ class TestListPets:
                 client, sample_publisher["headers"], name=f"Pet {i}"
             )
 
-        resp = client.get("/pets/")
+        resp = client.get("/pets")
         assert resp.status_code == 200
         body = resp.json()
         assert "items" in body
@@ -108,7 +108,7 @@ class TestListPets:
         _create_pet(client, sample_publisher["headers"], name="Dog2", species="DOG")
         _create_pet(client, sample_publisher["headers"], name="Cat1", species="CAT")
 
-        resp = client.get("/pets/", params={"species": "DOG"})
+        resp = client.get("/pets", params={"species": "DOG"})
         assert resp.status_code == 200
         body = resp.json()
         assert body["total"] == 2

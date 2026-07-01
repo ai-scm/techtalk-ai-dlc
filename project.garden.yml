@@ -44,8 +44,8 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/postgresql
-      tag: 16.3.0-debian-12-r23
-      pullPolicy: IfNotPresent
+      tag: "latest"
+      pullPolicy: Always
     auth:
       username: ${var.postgresUsername}
       database: ${var.postgresDatabase}

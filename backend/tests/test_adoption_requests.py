@@ -17,7 +17,7 @@ def _create_pet(client: TestClient, headers: dict, **overrides: object) -> dict:
         "description": "Ready for adoption",
     }
     data.update(overrides)
-    resp = client.post("/pets/", json=data, headers=headers)
+    resp = client.post("/pets", json=data, headers=headers)
     assert resp.status_code == 201, f"Failed to create pet: {resp.text}"
     return resp.json()
 

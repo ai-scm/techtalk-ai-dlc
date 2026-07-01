@@ -8,7 +8,7 @@ from core.exceptions import exception_handlers
 from routers import pets, requests, users
 from seed import seed_database
 
-app = FastAPI(title=settings.APP_NAME)
+app = FastAPI(title=settings.APP_NAME, redirect_slashes=False)
 
 # Register custom exception handlers
 for exc_class, handler in exception_handlers.items():
