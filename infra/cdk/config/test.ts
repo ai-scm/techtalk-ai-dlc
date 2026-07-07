@@ -25,7 +25,7 @@ export const testConfig: EnvironmentConfig = {
 
   eks: {
     clusterName: 'dog-keeper-test-eks',
-    kubernetesVersion: '1.29',
+    kubernetesVersion: '1.31',
     namespace: 'dog-keeper-test',
   },
 
@@ -37,6 +37,7 @@ export const testConfig: EnvironmentConfig = {
     githubOwner: 'ai-scm',
     githubRepo: 'techtalk-ai-dlc',
     githubBranch: 'feature/unidad_infra',
+    connectionArn: 'arn:aws:codeconnections:us-east-1:891377180652:connection/d929594d-4032-41c7-8281-bf7b2ddf2d29',
   },
 
   monitoring: {

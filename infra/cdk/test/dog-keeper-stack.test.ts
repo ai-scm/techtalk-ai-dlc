@@ -27,6 +27,7 @@ const testConfig: EnvironmentConfig = {
     githubOwner: 'test-owner',
     githubRepo: 'test-repo',
     githubBranch: 'main',
+    connectionArn: 'arn:aws:codeconnections:us-east-1:123456789012:connection/test-connection-id',
   },
   monitoring: {
     logRetentionDays: 7,

@@ -40,6 +40,7 @@ export interface PipelineConfig {
   readonly githubOwner: string;
   readonly githubRepo: string;
   readonly githubBranch: string;
+  readonly connectionArn: string;
 }
 
 export interface MonitoringConfig {
@@ -110,6 +111,7 @@ export interface PipelineConstructProps {
   readonly githubOwner: string;
   readonly githubRepo: string;
   readonly githubBranch: string;
+  readonly connectionArn: string;
   readonly ecrRepositoryArns: string[];
   readonly eksClusterName: string;
   readonly eksClusterArn?: string;

@@ -19,6 +19,7 @@ export class PipelineConstruct extends Construct {
   public readonly pipeline: codepipeline.Pipeline;
   public readonly buildProject: codebuild.PipelineProject;
   public readonly deployProject: codebuild.PipelineProject;
+  public deployRole!: iam.Role;
 
   constructor(scope: Construct, id: string, props: PipelineConstructProps) {
     super(scope, id);
@@ -48,7 +49,7 @@ export class PipelineConstruct extends Construct {
           owner: props.githubOwner,
           repo: props.githubRepo,
           branch: props.githubBranch,
-          connectionArn: this.createConnectionArn(props),
+          connectionArn: props.connectionArn,
           output: sourceOutput,
           triggerOnPush: true,
         }),
@@ -212,6 +213,7 @@ export class PipelineConstruct extends Construct {
       roleName: `dog-keeper-${props.environment}-codebuild-deploy-role`,
       assumedBy: new iam.ServicePrincipal('codebuild.amazonaws.com'),
     });
+    this.deployRole = deployRole;
 
     // Grant EKS access
     deployRole.addToPolicy(new iam.PolicyStatement({
@@ -365,16 +367,4 @@ export class PipelineConstruct extends Construct {
     });
   }
 
-  /**
-   * Constructs the CodeConnections ARN.
-   * The actual connection must be created and confirmed in the AWS Console
-   * before the pipeline can pull from GitHub.
-   */
-  private createConnectionArn(props: PipelineConstructProps): string {
-    return cdk.Arn.format({
-      service: 'codeconnections',
-      resource: 'connection',
-      resourceName: '*', // Placeholder — replace with actual connection ID after setup
-    }, cdk.Stack.of(this));
-  }
 }

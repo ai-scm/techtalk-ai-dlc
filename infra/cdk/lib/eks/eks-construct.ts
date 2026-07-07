@@ -75,23 +75,34 @@ export class EksConstruct extends Construct {
       subnetSelection: { subnets: privateSubnets },
     });
 
-    // Patch CoreDNS to run on Fargate (remove ec2 annotation)
-    this.cluster.addManifest('CoreDnsPatch', {
-      apiVersion: 'apps/v1',
-      kind: 'Deployment',
-      metadata: {
-        name: 'coredns',
-        namespace: 'kube-system',
-      },
-      spec: {
-        template: {
-          metadata: {
-            annotations: {
-              'eks.amazonaws.com/compute-type': 'fargate',
+    // Patch CoreDNS to run on Fargate (remove ec2 compute-type annotation)
+    new eks.KubernetesPatch(this, 'CoreDnsPatch', {
+      cluster: this.cluster,
+      resourceName: 'deployment/coredns',
+      resourceNamespace: 'kube-system',
+      applyPatch: {
+        spec: {
+          template: {
+            metadata: {
+              annotations: {
+                'eks.amazonaws.com/compute-type': 'fargate',
+              },
             },
           },
         },
       },
+      restorePatch: {
+        spec: {
+          template: {
+            metadata: {
+              annotations: {
+                'eks.amazonaws.com/compute-type': 'ec2',
+              },
+            },
+          },
+        },
+      },
+      patchType: eks.PatchType.STRATEGIC,
     });
 
     // Create application namespace
@@ -104,15 +115,21 @@ export class EksConstruct extends Construct {
     });
 
     // IAM Role for application pods (IRSA) — SSM access
+    const appPodCondition = new cdk.CfnJson(this, 'AppPodCondition', {
+      value: {
+        [`${this.cluster.openIdConnectProvider.openIdConnectProviderIssuer}:sub`]:
+          `system:serviceaccount:${props.namespace}:*`,
+        [`${this.cluster.openIdConnectProvider.openIdConnectProviderIssuer}:aud`]:
+          'sts.amazonaws.com',
+      },
+    });
+
     this.appPodRole = new iam.Role(this, 'AppPodRole', {
       roleName: `dog-keeper-${props.environment}-app-pod-role`,
       assumedBy: new iam.FederatedPrincipal(
         this.cluster.openIdConnectProvider.openIdConnectProviderArn,
         {
-          StringLike: {
-            [`${this.cluster.openIdConnectProvider.openIdConnectProviderIssuer}:sub`]:
-              `system:serviceaccount:${props.namespace}:*`,
-          },
+          StringLike: appPodCondition,
         },
         'sts:AssumeRoleWithWebIdentity'
       ),
@@ -153,15 +170,21 @@ export class EksConstruct extends Construct {
     }));
 
     // AWS Load Balancer Controller - IAM Role (IRSA)
+    const albControllerCondition = new cdk.CfnJson(this, 'AlbControllerCondition', {
+      value: {
+        [`${this.cluster.openIdConnectProvider.openIdConnectProviderIssuer}:sub`]:
+          'system:serviceaccount:kube-system:aws-load-balancer-controller',
+        [`${this.cluster.openIdConnectProvider.openIdConnectProviderIssuer}:aud`]:
+          'sts.amazonaws.com',
+      },
+    });
+
     this.albControllerRole = new iam.Role(this, 'AlbControllerRole', {
       roleName: `dog-keeper-${props.environment}-alb-controller-role`,
       assumedBy: new iam.FederatedPrincipal(
         this.cluster.openIdConnectProvider.openIdConnectProviderArn,
         {
-          StringEquals: {
-            [`${this.cluster.openIdConnectProvider.openIdConnectProviderIssuer}:sub`]:
-              `system:serviceaccount:kube-system:aws-load-balancer-controller`,
-          },
+          StringEquals: albControllerCondition,
         },
         'sts:AssumeRoleWithWebIdentity'
       ),
@@ -267,6 +290,17 @@ export class EksConstruct extends Construct {
           'eks.amazonaws.com/role-arn': this.appPodRole.roleArn,
         },
       },
+    });
+  }
+
+  /**
+   * Grants a role full kubectl access to the cluster (system:masters).
+   * Use this to allow CodeBuild deploy roles to interact with the cluster.
+   */
+  public grantDeployAccess(role: iam.IRole, username: string): void {
+    this.cluster.awsAuth.addRoleMapping(role, {
+      groups: ['system:masters'],
+      username: username,
     });
   }
 }

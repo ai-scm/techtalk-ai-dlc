@@ -1,4 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
+import * as ssm from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
 import { DogKeeperStackProps } from './shared/types';
 import { NetworkingConstruct } from './networking/networking-construct';
@@ -72,9 +73,43 @@ export class DogKeeperStack extends cdk.Stack {
       githubOwner: config.pipeline.githubOwner,
       githubRepo: config.pipeline.githubRepo,
       githubBranch: config.pipeline.githubBranch,
+      connectionArn: config.pipeline.connectionArn,
       ecrRepositoryArns: this.ecr.repositories.map(repo => repo.repositoryArn),
       eksClusterName: config.eks.clusterName,
       eksClusterArn: this.eks.cluster.clusterArn,
+    });
+
+    // 6. Grant CodeBuild deploy role kubectl access to EKS (aws-auth ConfigMap)
+    this.eks.grantDeployAccess(
+      this.pipeline.deployRole,
+      'codebuild-deploy'
+    );
+
+    // 7. SSM Parameters — Created automatically so no manual steps needed
+    new ssm.StringParameter(this, 'SsmDbUsername', {
+      parameterName: `/dog-keeper/${config.environment}/db-username`,
+      stringValue: 'postgres',
+      description: 'Database username for Dog Keeper',
+    });
+    new ssm.StringParameter(this, 'SsmDbHost', {
+      parameterName: `/dog-keeper/${config.environment}/db-host`,
+      stringValue: 'db',
+      description: 'Database host (in-cluster service name)',
+    });
+    new ssm.StringParameter(this, 'SsmDbName', {
+      parameterName: `/dog-keeper/${config.environment}/db-name`,
+      stringValue: 'dog_keeper_db',
+      description: 'Database name',
+    });
+    new ssm.StringParameter(this, 'SsmDbPassword', {
+      parameterName: `/dog-keeper/${config.environment}/db-password`,
+      stringValue: 'CHANGE_ME_AFTER_DEPLOY',
+      description: 'Database password — update this value after deploy',
+    });
+    new ssm.StringParameter(this, 'SsmJwtSecret', {
+      parameterName: `/dog-keeper/${config.environment}/jwt-secret`,
+      stringValue: 'CHANGE_ME_AFTER_DEPLOY',
+      description: 'JWT signing secret — update this value after deploy',
     });
 
     // Stack outputs
