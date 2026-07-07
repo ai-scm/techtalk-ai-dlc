@@ -3,8 +3,8 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-06-21T00:00:00Z
-- **Current Stage**: CONSTRUCTION - Code Generation (Unit 3: Frontend)
-- **Next Stage**: Code Generation (Unit 3: Frontend)
+- **Current Stage**: CONSTRUCTION - Build and Test
+- **Next Stage**: Build and Test
 
 ## Workspace State
 - **Existing Code**: No
@@ -50,11 +50,11 @@ AI-DLC Discovery (sample-aidlc-discovery v2) se ejecutó y produjo los insumos c
 - [ ] **Unit 3: Frontend**
   - [x] Functional Design (Approved 2026-06-30)
   - [x] Infrastructure Design (Approved 2026-06-30)
-  - [ ] Code Generation
-- [ ] **Unit 4: Infrastructure (AWS CDK)**
-  - [ ] Infrastructure Design
-  - [ ] Code Generation
-- [ ] Build and Test
+  - [x] Code Generation (Approved 2026-07-07)
+- [x] **Unit 4: Infrastructure (AWS CDK)**
+  - [x] Infrastructure Design (Approved 2026-07-07, rev.2 single parent stack)
+  - [x] Code Generation (Approved 2026-07-07)
+- [x] Build and Test (Complete 2026-07-07)
 
 ### 🟡 OPERATIONS PHASE
 - [ ] Operations - PLACEHOLDER

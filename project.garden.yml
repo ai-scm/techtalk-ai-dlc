@@ -17,6 +17,12 @@ environments:
       baseHostname: local.app.garden
       hostname: dog-keeper.${var.baseHostname}
 
+  - name: test
+    defaultNamespace: dog-keeper-test
+    variables:
+      baseHostname: ""
+      hostname: ""
+
 providers:
   - name: container
     gardenContainerBuilder:
@@ -28,6 +34,14 @@ providers:
     buildMode: local-docker
     setupIngressController: nginx
     context: minikube
+  - name: kubernetes
+    environments: [test]
+    namespace: dog-keeper-test
+    context: arn:aws:eks:us-east-1:891377180652:cluster/dog-keeper-test-eks
+    buildMode: kaniko
+    deploymentRegistry:
+      hostname: 891377180652.dkr.ecr.us-east-1.amazonaws.com
+      namespace: dog-keeper-test
 
 ---
 kind: Deploy

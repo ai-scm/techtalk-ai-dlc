@@ -435,3 +435,144 @@
 **Context**: Session continuity - resuming CONSTRUCTION phase
 
 ---
+
+## Session Resumption
+**Timestamp**: 2026-07-07T14:55:04-05:00
+**User Input**: "inicia AI_DLC"
+**AI Response**: "Detectado proyecto AI-DLC existente. Resumiendo desde Code Generation (Unit 3: Frontend) — awaiting approval. Presentando welcome back prompt."
+**Context**: Session continuity - resuming CONSTRUCTION phase
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 3: Frontend) - User Approval
+**Timestamp**: 2026-07-07T14:58:14-05:00
+**User Input**: "Continuar y avanzar a la siguiente etapa"
+**AI Response**: "Code Generation del Frontend aprobado. Procediendo a Infrastructure Design (Unit 4: AWS CDK)."
+**Context**: CONSTRUCTION - Code Generation (Unit 3: Frontend) APPROVED. Next: Infrastructure Design (Unit 4: AWS CDK)
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - Questions Created
+**Timestamp**: 2026-07-07T14:58:14-05:00
+**User Input**: N/A (questions generated)
+**AI Response**: "Creado infra-cdk-infrastructure-design-questions.md con 11 preguntas sobre: RDS instance type, VPC strategy, API Gateway type, custom domain, secrets management, Multi-AZ, backups, environments, WAF, Lambda packaging, y monitoring. Esperando respuestas del usuario."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - Questions generated, awaiting answers
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - User Answers Received
+**Timestamp**: 2026-07-07T16:09:24-05:00
+**User Input**: "listo"
+**AI Response**: "Leídas las 11 respuestas. Pivote arquitectónico significativo detectado: NO Lambda/API Gateway/S3+CloudFront. En su lugar: EKS Fargate + ALB + PostgreSQL en Helm (cluster) para test. Coherente con steering docs (aws-platform.md, aws-cdk.md). Sin contradicciones internas entre respuestas. Generando artefactos de infraestructura."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - Answers collected, architecture pivot confirmed
+
+### Answers Summary:
+- Q1: D (PostgreSQL en cluster EKS via Helm, no RDS — configurable para prod futuro)
+- Q2: C (VPC y subnets existentes, pasadas como config/ARNs)
+- Q3: C (No API Gateway — ALB frente a EKS es suficiente y más barato)
+- Q4: A (Endpoints por defecto de AWS)
+- Q5: B (SSM Parameter Store SecureString)
+- Q6: C (N/A — sin RDS en POC)
+- Q7: D (N/A — sin RDS en POC)
+- Q8: C (Solo entorno `test` — local es dev)
+- Q9: A (Sin WAF)
+- Q10: C (NO Lambda — EKS Fargate para todo)
+- Q11: A (Mínimo — CloudWatch Logs + métricas por defecto)
+
+### Architecture Pivot (vs Unit-of-Work plan):
+- ❌ Lambda + API Gateway + S3/CloudFront
+- ✅ EKS Fargate + ALB + PostgreSQL (Helm in-cluster) + ECR
+- Coherente con steering docs (aws-platform.md, aws-cdk.md, deployment-strategy.md)
+- Frontend corre como pod en EKS (no S3+CloudFront)
+- Misma topología que local pero en AWS managed (EKS Fargate)
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - Artifacts Generated
+**Timestamp**: 2026-07-07T16:09:24-05:00
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Infrastructure Design para AWS CDK generado: infrastructure-design.md (5 stacks CDK: Networking import, ECR, EKS Fargate, Monitoring, Pipeline; DB in-cluster Helm; SSM secrets; ALB; naming convention; cost estimate ~$110-120/mes) y deployment-architecture.md (cloud topology, CI/CD pipeline flow, K8s resources, Fargate sizing, network flow, VPC endpoints, extensibility for prod). Arquitectura: EKS Fargate + ALB + PostgreSQL Helm in-cluster + ECR + SSM + CodePipeline."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - COMPLETE, awaiting approval
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - Change Request
+**Timestamp**: 2026-07-07T16:17:24-05:00
+**User Input**: "Solo un cambio para facilidad de es mejor que todos los stacks pertenezcan a un un solo, es decir que sean stacks anidados de esta manera todo se puede desplegar en un solo momento y tambien eliminar con facilidad"
+**AI Response**: "Entendido. Se cambia la arquitectura de 5 stacks independientes a 1 stack padre con nested stacks (NestedStack). Esto permite `cdk deploy` y `cdk destroy` en un solo comando. Actualizando artefactos."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - CHANGE REQUESTED (single parent stack with nested stacks)
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - Changes Applied
+**Timestamp**: 2026-07-07T16:17:24-05:00
+**User Input**: N/A (changes applied, re-presenting for approval)
+**AI Response**: "Diseño actualizado: Un solo DogKeeperStack con Constructs internos (Networking, ECR, EKS, Monitoring, Pipeline). Deploy/destroy atómico con `cdk deploy DogKeeperStack` / `cdk destroy DogKeeperStack`. Los Constructs siguen siendo modulares. Se actualizó: CDK Stacks section, project structure, deployment order, naming convention."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - rev.2 (single parent stack), awaiting re-approval
+
+---
+
+## CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) - User Approval
+**Timestamp**: 2026-07-07T16:19:02-05:00
+**User Input**: "Continuar con el siguiente stage"
+**AI Response**: "Infrastructure Design del AWS CDK aprobado (rev.2 single parent stack). Procediendo a Code Generation (Unit 4: AWS CDK)."
+**Context**: CONSTRUCTION - Infrastructure Design (Unit 4: AWS CDK) APPROVED. Next: Code Generation (Unit 4: AWS CDK)
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 4: AWS CDK) - Plan Created
+**Timestamp**: 2026-07-07T16:19:02-05:00
+**User Input**: N/A (awaiting approval of plan)
+**AI Response**: "Plan de Code Generation creado para AWS CDK: 11 steps covering project setup, shared types/config, 5 constructs (Networking, ECR, EKS, Monitoring, Pipeline), parent stack, entry point, unit tests, and documentation summary. Total ~16 files to generate."
+**Context**: CONSTRUCTION - Code Generation (Unit 4: AWS CDK) - Part 1 (Planning), awaiting approval
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 4: AWS CDK) - Plan Approved
+**Timestamp**: 2026-07-07T16:21:18-05:00
+**User Input**: "Aprobar y continuar"
+**AI Response**: "Plan aprobado. Iniciando Part 2: Generation — Step 1: Project Setup."
+**Context**: CONSTRUCTION - Code Generation (Unit 4: AWS CDK) - Part 1 APPROVED. Starting Part 2.
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 4: AWS CDK) - Complete
+**Timestamp**: 2026-07-07T16:21:18-05:00
+**User Input**: N/A (awaiting approval)
+**AI Response**: "Code Generation del AWS CDK completada. 15 archivos TypeScript generados: 4 project config + 5 constructs (Networking, ECR, EKS, Monitoring, Pipeline) + parent stack + entry point + jest config + unit tests + documentation. Plan 11/11 steps [x]. Presentado para aprobación."
+**Context**: CONSTRUCTION - Code Generation (Unit 4: AWS CDK) - COMPLETE, awaiting approval
+
+---
+
+## CONSTRUCTION - Code Generation (Unit 4: AWS CDK) - User Approval
+**Timestamp**: 2026-07-07T16:29:34-05:00
+**User Input**: "Continuar al siguiente stage, si requieres node puedes usar nvm use 24."
+**AI Response**: "Code Generation del AWS CDK aprobado. Procediendo a Build and Test (final stage de CONSTRUCTION)."
+**Context**: CONSTRUCTION - Code Generation (Unit 4: AWS CDK) APPROVED. Next: Build and Test
+
+---
+
+## CONSTRUCTION - Build and Test - Complete
+**Timestamp**: 2026-07-07T16:29:34-05:00
+**Build Status**: ✅ CDK TypeScript compilation passes (tsc --noEmit). CDK synth requires real config values (expected).
+**Test Status**: Tests written and ready to execute (unit tests for all 4 units + integration tests defined)
+**Files Generated**:
+- aidlc-docs/construction/build-and-test/build-instructions.md
+- aidlc-docs/construction/build-and-test/unit-test-instructions.md
+- aidlc-docs/construction/build-and-test/integration-test-instructions.md
+- aidlc-docs/construction/build-and-test/build-and-test-summary.md
+**Context**: CONSTRUCTION - Build and Test - COMPLETE, awaiting approval
+
+---
+
+## Post-Approval Fix: Garden test environment + CodeBuild Garden install
+**Timestamp**: 2026-07-07T16:53:13-05:00
+**User Input**: "Si por favor haz este cambio para que los despliegues sean consistentes, pero ten en cuenta que en entorno de codebuild tambien sera necesario instalar garden tanto para las pruebas como para el despliegue en ese cluster"
+**AI Response**: "Actualizado project.garden.yml con environment 'test' + provider 'kubernetes' (EKS context + ECR registry). Actualizado pipeline-construct.ts: CodeBuild deploy stage ahora instala Garden CLI + aws-iam-authenticator, ejecuta `garden deploy --env test`, y corre `garden test integration-tests --env test` para smoke/integration tests. Añadidos permisos EKS AccessKubernetesApi + STS GetCallerIdentity al deploy role. TypeScript sigue compilando sin errores."
+**Context**: Post-Build&Test fix — consistency between local and cloud deploys via Garden
+
+### Files Modified:
+- project.garden.yml (added test environment + kubernetes provider)
+- infra/cdk/lib/pipeline/pipeline-construct.ts (Garden install + test execution + EKS permissions)
+
+---
