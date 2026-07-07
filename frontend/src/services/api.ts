@@ -44,8 +44,23 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 
     try {
       const errorBody = await response.json();
-      detail = errorBody.detail || detail;
-      code = errorBody.code || code;
+
+      if (Array.isArray(errorBody.detail)) {
+        // Pydantic validation errors — extract human-readable messages
+        detail = errorBody.detail
+          .map((err: { msg?: string; loc?: string[] }) => {
+            const field = err.loc?.slice(-1)[0] || 'campo';
+            return `${field}: ${err.msg || 'error de validación'}`;
+          })
+          .join('. ');
+        code = 'VALIDATION_ERROR';
+      } else if (typeof errorBody.detail === 'string') {
+        detail = errorBody.detail;
+        code = errorBody.code || code;
+      } else if (errorBody.message) {
+        detail = errorBody.message;
+        code = errorBody.code || code;
+      }
     } catch {
       // Response body is not JSON
     }
@@ -70,6 +85,7 @@ interface LoginPayload {
 interface RegisterPayload {
   email: string;
   password: string;
+  confirm_password: string;
   name: string;
   role: string;
   phone?: string;
@@ -156,11 +172,8 @@ export const pets = {
     });
   },
 
-  getMine(page: number = 1, pageSize: number = 12): Promise<PaginatedResponse<PetResponse>> {
-    const params = new URLSearchParams();
-    params.set('page', String(page));
-    params.set('page_size', String(pageSize));
-    return request<PaginatedResponse<PetResponse>>(`/pets/mine?${params.toString()}`);
+  getMine(): Promise<PetResponse[]> {
+    return request<PetResponse[]>('/pets/mine');
   },
 };
 
@@ -196,57 +209,43 @@ interface CreateRequestPayload {
 
 export const requests = {
   create(data: CreateRequestPayload): Promise<AdoptionRequestResponse> {
-    return request<AdoptionRequestResponse>('/adoption-requests', {
+    const { pet_id, ...body } = data;
+    return request<AdoptionRequestResponse>(`/pets/${pet_id}/requests`, {
       method: 'POST',
-      body: data,
+      body,
     });
   },
 
-  getMine(
-    page: number = 1,
-    pageSize: number = 12
-  ): Promise<PaginatedResponse<AdoptionRequestResponse>> {
-    const params = new URLSearchParams();
-    params.set('page', String(page));
-    params.set('page_size', String(pageSize));
-    return request<PaginatedResponse<AdoptionRequestResponse>>(
-      `/adoption-requests/mine?${params.toString()}`
-    );
+  getMine(): Promise<AdoptionRequestResponse[]> {
+    return request<AdoptionRequestResponse[]>('/requests/mine');
   },
 
   cancel(requestId: string): Promise<AdoptionRequestResponse> {
-    return request<AdoptionRequestResponse>(`/adoption-requests/${requestId}/cancel`, {
+    return request<AdoptionRequestResponse>(`/requests/${requestId}/cancel`, {
       method: 'PATCH',
     });
   },
 
-  getForPet(
-    petId: string,
-    page: number = 1,
-    pageSize: number = 12
-  ): Promise<PaginatedResponse<AdoptionRequestDetailResponse>> {
-    const params = new URLSearchParams();
-    params.set('page', String(page));
-    params.set('page_size', String(pageSize));
-    return request<PaginatedResponse<AdoptionRequestDetailResponse>>(
-      `/adoption-requests/pet/${petId}?${params.toString()}`
-    );
+  getForPet(petId: string): Promise<AdoptionRequestDetailResponse[]> {
+    return request<AdoptionRequestDetailResponse[]>(`/pets/${petId}/requests`);
   },
 
   accept(requestId: string): Promise<AdoptionRequestResponse> {
-    return request<AdoptionRequestResponse>(`/adoption-requests/${requestId}/accept`, {
+    return request<AdoptionRequestResponse>(`/requests/${requestId}/accept`, {
       method: 'PATCH',
     });
   },
 
   reject(requestId: string): Promise<AdoptionRequestResponse> {
-    return request<AdoptionRequestResponse>(`/adoption-requests/${requestId}/reject`, {
+    return request<AdoptionRequestResponse>(`/requests/${requestId}/reject`, {
       method: 'PATCH',
     });
   },
 
   review(requestId: string): Promise<AdoptionRequestDetailResponse> {
-    return request<AdoptionRequestDetailResponse>(`/adoption-requests/${requestId}`);
+    return request<AdoptionRequestDetailResponse>(`/requests/${requestId}/review`, {
+      method: 'PATCH',
+    });
   },
 };
 

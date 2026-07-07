@@ -14,8 +14,8 @@ export default function MyRequestsPage() {
 
   async function fetchRequests() {
     try {
-      const response = await api.requests.getMine();
-      setRequests(response.items);
+      const data = await api.requests.getMine();
+      setRequests(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al cargar solicitudes');
     } finally {

@@ -51,7 +51,13 @@ def list_my_pets(
 ) -> list[PetResponse]:
     """List pets published by the authenticated user."""
     pets = pet_repository.list_by_publisher(db, current_user.id)
-    return [PetResponse.model_validate(p) for p in pets]
+    responses = []
+    for p in pets:
+        response = PetResponse.model_validate(p)
+        if p.photos:
+            response.first_photo_id = p.photos[0].id
+        responses.append(response)
+    return responses
 
 
 @router.get("/{pet_id}", response_model=PetDetailResponse)

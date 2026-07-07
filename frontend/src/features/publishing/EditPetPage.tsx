@@ -27,7 +27,7 @@ const AGE_GROUP_OPTIONS = [
 ];
 
 export default function EditPetPage() {
-  const { id } = useParams<{ id: string }>();
+  const { petId: id } = useParams<{ petId: string }>();
   const [pet, setPet] = useState<PetDetailResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

@@ -56,6 +56,7 @@ class PetResponse(BaseModel):
     health_status: str
     description: str
     status: str
+    first_photo_id: Optional[uuid.UUID] = None
     created_at: datetime
     updated_at: datetime
 

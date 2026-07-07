@@ -3,7 +3,7 @@ from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import func, select, and_
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from models.pet import Pet
 from schemas.pet import PetFilters
@@ -43,19 +43,20 @@ def list_available(
     offset = (page - 1) * page_size
     items_stmt = (
         select(Pet)
+        .options(joinedload(Pet.photos))
         .where(where_clause)
         .order_by(Pet.created_at.desc())
         .offset(offset)
         .limit(page_size)
     )
-    items = list(db.execute(items_stmt).scalars().all())
+    items = list(db.execute(items_stmt).unique().scalars().all())
 
     return items, total_count
 
 
 def list_by_publisher(db: Session, publisher_id: UUID) -> list[Pet]:
-    stmt = select(Pet).where(Pet.publisher_id == publisher_id)
-    return list(db.execute(stmt).scalars().all())
+    stmt = select(Pet).options(joinedload(Pet.photos)).where(Pet.publisher_id == publisher_id)
+    return list(db.execute(stmt).unique().scalars().all())
 
 
 def list_ids_by_publisher(db: Session, publisher_id: UUID) -> list[UUID]:

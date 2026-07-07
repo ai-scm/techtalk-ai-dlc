@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { PetResponse } from '@/types';
+import { getPhotoUrl } from '@/services/api';
 
 interface PetCardProps {
   pet: PetResponse;
@@ -50,9 +51,17 @@ export default function PetCard({ pet }: PetCardProps) {
       data-testid={`pet-card-${pet.id}`}
     >
       <div className="flex h-48 items-center justify-center bg-gray-100">
-        <span className="text-6xl" aria-hidden="true">
-          {speciesEmoji[pet.species] || '🐾'}
-        </span>
+        {pet.first_photo_id ? (
+          <img
+            src={getPhotoUrl(pet.id, pet.first_photo_id)}
+            alt={`Foto de ${pet.name}`}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <span className="text-6xl" aria-hidden="true">
+            {speciesEmoji[pet.species] || '🐾'}
+          </span>
+        )}
       </div>
 
       <div className="p-4">

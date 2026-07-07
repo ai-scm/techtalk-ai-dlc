@@ -13,8 +13,8 @@ export default function MyPetsPage() {
   useEffect(() => {
     async function fetchPets() {
       try {
-        const response = await api.pets.getMine();
-        setPets(response.items);
+        const data = await api.pets.getMine();
+        setPets(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error al cargar mascotas');
       } finally {

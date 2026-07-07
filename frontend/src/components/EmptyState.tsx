@@ -1,11 +1,14 @@
 import { ReactNode } from "react";
 
 interface EmptyStateProps {
-  message: string;
+  message?: string;
+  title?: string;
+  description?: string;
   icon?: ReactNode;
 }
 
-export default function EmptyState({ message, icon }: EmptyStateProps) {
+export default function EmptyState({ message, title, description, icon }: EmptyStateProps) {
+  const displayTitle = title || message || "Sin resultados";
   return (
     <div
       className="flex flex-col items-center justify-center py-12 text-center"
@@ -30,7 +33,10 @@ export default function EmptyState({ message, icon }: EmptyStateProps) {
           />
         </svg>
       )}
-      <p className="text-lg font-medium text-gray-500">{message}</p>
+      <p className="text-lg font-medium text-gray-500">{displayTitle}</p>
+      {description && (
+        <p className="mt-1 text-sm text-gray-400">{description}</p>
+      )}
     </div>
   );
 }

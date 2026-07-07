@@ -19,6 +19,11 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
 
+    if (password.length < 8) {
+      setError('La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError('Las contraseñas no coinciden.');
       return;
@@ -27,8 +32,8 @@ export default function RegisterPage() {
     setIsSubmitting(true);
 
     try {
-      await register({ email, password, name, role });
-      navigate('/catalog');
+      const redirectUrl = await register({ email, password, confirm_password: confirmPassword, name, role });
+      navigate(redirectUrl || '/catalog');
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.detail);

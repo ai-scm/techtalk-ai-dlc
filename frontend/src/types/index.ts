@@ -27,6 +27,7 @@ export interface PetResponse {
   health_status: string;
   description: string;
   status: string;
+  first_photo_id?: string;
   created_at: string;
   updated_at: string;
 }

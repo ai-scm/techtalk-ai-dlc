@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import * as api from '@/services/api';
 import { PetDetailResponse, ApiError } from '@/types';
@@ -37,6 +37,7 @@ const speciesEmoji: Record<string, string> = {
 export default function PetDetailPage() {
   const { petId } = useParams<{ petId: string }>();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [pet, setPet] = useState<PetDetailResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -77,6 +78,8 @@ export default function PetDetailPage() {
     try {
       await api.requests.create({ pet_id: petId, message: message || undefined });
       setRequestSent(true);
+      // Redirect to my requests after a brief delay to show success
+      setTimeout(() => navigate('/requests/mine'), 1500);
     } catch (err) {
       if (err instanceof ApiError) {
         setRequestError(err.detail);

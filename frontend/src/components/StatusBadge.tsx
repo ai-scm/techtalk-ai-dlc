@@ -1,7 +1,9 @@
 interface StatusBadgeProps {
   status: string;
-  type: "pet" | "request";
+  type?: "pet" | "request";
 }
+
+const petStatuses = new Set(["AVAILABLE", "IN_PROCESS", "ADOPTED"]);
 
 const petStatusColors: Record<string, string> = {
   AVAILABLE: "bg-green-100 text-green-800 border-green-200",
@@ -31,7 +33,8 @@ const statusLabels: Record<string, string> = {
 };
 
 export default function StatusBadge({ status, type }: StatusBadgeProps) {
-  const colorMap = type === "pet" ? petStatusColors : requestStatusColors;
+  const resolvedType = type || (petStatuses.has(status) ? "pet" : "request");
+  const colorMap = resolvedType === "pet" ? petStatusColors : requestStatusColors;
   const colorClasses = colorMap[status] ?? "bg-gray-100 text-gray-700 border-gray-200";
   const label = statusLabels[status] ?? status;
 

@@ -54,8 +54,14 @@ def list_available_pets(
 ) -> PaginatedResponse[PetResponse]:
     """List available pets with filters and pagination."""
     items, total = pet_repository.list_available(db, filters, page, page_size)
+    pet_responses = []
+    for pet in items:
+        response = PetResponse.model_validate(pet)
+        if pet.photos:
+            response.first_photo_id = pet.photos[0].id
+        pet_responses.append(response)
     return PaginatedResponse(
-        items=[PetResponse.model_validate(pet) for pet in items],
+        items=pet_responses,
         total=total,
         page=page,
         page_size=page_size,

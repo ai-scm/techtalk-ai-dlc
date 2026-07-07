@@ -12,14 +12,14 @@ export default function Navbar() {
     if (user.role === "ADOPTER") {
       return [
         { to: "/catalog", label: "Catálogo" },
-        { to: "/my-requests", label: "Mis Solicitudes" },
+        { to: "/requests/mine", label: "Mis Solicitudes" },
       ];
     }
 
     // PUBLISHER or FOUNDATION
     return [
       { to: "/catalog", label: "Catálogo" },
-      { to: "/my-pets", label: "Mis Mascotas" },
+      { to: "/pets/mine", label: "Mis Mascotas" },
     ];
   };
 

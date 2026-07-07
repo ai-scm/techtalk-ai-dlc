@@ -18,8 +18,8 @@ export default function PetRequestsPage() {
   async function fetchRequests() {
     if (!petId) return;
     try {
-      const response = await api.requests.getForPet(petId);
-      setRequests(response.items);
+      const data = await api.requests.getForPet(petId);
+      setRequests(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al cargar solicitudes');
     } finally {

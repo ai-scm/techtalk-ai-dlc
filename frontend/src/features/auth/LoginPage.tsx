@@ -1,7 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import * as api from '@/services/api';
 import { ApiError } from '@/types';
 
 export default function LoginPage() {
@@ -19,10 +18,8 @@ export default function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await api.auth.login({ email, password });
-      localStorage.setItem('token', response.access_token);
-      await login(email, password);
-      navigate(response.redirect_url || '/catalog');
+      const redirectUrl = await login(email, password);
+      navigate(redirectUrl || '/catalog');
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.detail);
