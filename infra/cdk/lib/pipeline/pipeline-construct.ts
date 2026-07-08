@@ -336,6 +336,8 @@ export class PipelineConstruct extends Construct {
               'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com',
               '',
               '# Initialize git repo (Garden requires a git root)',
+              'git config --global user.email "codebuild@dog-keeper.local"',
+              'git config --global user.name "CodeBuild"',
               'git init',
               'git add .',
               'git commit -m "codebuild" --allow-empty --no-verify',
