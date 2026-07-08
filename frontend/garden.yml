@@ -36,6 +36,7 @@ spec:
             kubernetes.io/ingress.class: "${environment.name == 'test' ? 'alb' : 'nginx'}"
             alb.ingress.kubernetes.io/scheme: "internet-facing"
             alb.ingress.kubernetes.io/target-type: "ip"
+            alb.ingress.kubernetes.io/subnets: "subnet-0256451ef25a44077,subnet-02ef9d7abfc8775e6"
         spec:
           rules:
             - host: "${var.hostname}"
