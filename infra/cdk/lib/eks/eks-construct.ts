@@ -192,7 +192,7 @@ export class EksConstruct extends Construct {
       ),
     });
 
-    // ALB Controller IAM Policy (subset of required permissions)
+    // ALB Controller IAM Policy (full required permissions)
     this.albControllerRole.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: [
@@ -204,6 +204,10 @@ export class EksConstruct extends Construct {
         'ec2:DescribeAddresses',
         'ec2:DescribeAvailabilityZones',
         'ec2:DescribeNetworkInterfaces',
+        'ec2:DescribeRouteTables',
+        'ec2:DescribeCoipPools',
+        'ec2:DescribeInstances',
+        'ec2:GetCoipPoolUsage',
         'ec2:CreateSecurityGroup',
         'ec2:AuthorizeSecurityGroupIngress',
         'ec2:RevokeSecurityGroupIngress',
@@ -227,6 +231,7 @@ export class EksConstruct extends Construct {
         'elasticloadbalancing:DeleteRule',
         'elasticloadbalancing:ModifyLoadBalancerAttributes',
         'elasticloadbalancing:ModifyTargetGroupAttributes',
+        'elasticloadbalancing:ModifyTargetGroup',
         'elasticloadbalancing:ModifyListener',
         'elasticloadbalancing:ModifyRule',
         'elasticloadbalancing:RegisterTargets',
@@ -239,6 +244,7 @@ export class EksConstruct extends Construct {
         'elasticloadbalancing:DescribeLoadBalancers',
         'elasticloadbalancing:DescribeTargetGroups',
         'elasticloadbalancing:DescribeListeners',
+        'elasticloadbalancing:DescribeListenerAttributes',
         'elasticloadbalancing:DescribeRules',
         'elasticloadbalancing:DescribeTargetHealth',
         'elasticloadbalancing:DescribeLoadBalancerAttributes',
