@@ -3,6 +3,7 @@ import * as eks from 'aws-cdk-lib/aws-eks';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
+import { KubectlV31Layer } from '@aws-cdk/lambda-layer-kubectl-v31';
 import { EksConstructProps } from '../shared/types';
 
 /**
@@ -55,6 +56,7 @@ export class EksConstruct extends Construct {
       defaultCapacity: 0, // No EC2 node groups
       endpointAccess: eks.EndpointAccess.PUBLIC_AND_PRIVATE,
       outputClusterName: true,
+      kubectlLayer: new KubectlV31Layer(this, 'KubectlLayer'),
     });
 
     // Fargate Profile for application pods

@@ -27,6 +27,7 @@ export const testConfig: EnvironmentConfig = {
     clusterName: 'dog-keeper-test-eks',
     kubernetesVersion: '1.31',
     namespace: 'dog-keeper-test',
+    adminRoleArn: 'arn:aws:iam::891377180652:role/PS-CloudSeniorEngineerAccess',
   },
 
   database: {

@@ -1,4 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
 import { DogKeeperStackProps } from './shared/types';
@@ -79,11 +80,21 @@ export class DogKeeperStack extends cdk.Stack {
       eksClusterArn: this.eks.cluster.clusterArn,
     });
 
-    // 6. Grant CodeBuild deploy role kubectl access to EKS (aws-auth ConfigMap)
+    // 6. Grant CodeBuild roles kubectl access to EKS (aws-auth ConfigMap)
     this.eks.grantDeployAccess(
       this.pipeline.deployRole,
       'codebuild-deploy'
     );
+    this.eks.grantDeployAccess(
+      this.pipeline.testProject.role!,
+      'codebuild-test'
+    );
+
+    // 7. Grant admin console access to EKS (if configured)
+    if (config.eks.adminRoleArn) {
+      const adminRole = iam.Role.fromRoleArn(this, 'AdminRole', config.eks.adminRoleArn);
+      this.eks.grantDeployAccess(adminRole, 'admin-console');
+    }
 
     // 7. SSM Parameters — Created automatically so no manual steps needed
     new ssm.StringParameter(this, 'SsmDbUsername', {

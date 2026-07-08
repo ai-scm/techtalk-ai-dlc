@@ -42,7 +42,7 @@ export class EcrConstruct extends Construct {
   ): ecr.Repository {
     const repository = new ecr.Repository(this, `${serviceName}Repo`, {
       repositoryName: `dog-keeper-${environment}/${serviceName}`,
-      imageTagMutability: ecr.TagMutability.IMMUTABLE,
+      imageTagMutability: ecr.TagMutability.MUTABLE,
       imageScanOnPush: true,
       encryption: ecr.RepositoryEncryption.AES_256,
       removalPolicy: cdk.RemovalPolicy.DESTROY,

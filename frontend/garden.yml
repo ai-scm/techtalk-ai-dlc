@@ -31,10 +31,14 @@ spec:
     - kind: Ingress
       name: frontend
       patch:
+        metadata:
+          annotations:
+            kubernetes.io/ingress.class: "${environment.name == 'test' ? 'alb' : 'nginx'}"
+            alb.ingress.kubernetes.io/scheme: "internet-facing"
+            alb.ingress.kubernetes.io/target-type: "ip"
         spec:
-          ingressClassName: nginx
           rules:
-            - host: ${var.hostname}
+            - host: "${var.hostname}"
               http:
                 paths:
                   - backend:

@@ -26,6 +26,7 @@ export interface EksConfig {
   readonly clusterName: string;
   readonly kubernetesVersion: string;
   readonly namespace: string;
+  readonly adminRoleArn?: string;
 }
 
 export interface DatabaseConfig {

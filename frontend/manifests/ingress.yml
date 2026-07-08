@@ -3,10 +3,8 @@ kind: Ingress
 metadata:
   name: frontend
 spec:
-  ingressClassName: nginx
   rules:
-    - host: frontend.local
-      http:
+    - http:
         paths:
           - backend:
               service:
