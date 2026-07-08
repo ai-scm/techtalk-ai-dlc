@@ -41,7 +41,7 @@ export class EcrConstruct extends Construct {
     maxImageCount: number
   ): ecr.Repository {
     const repository = new ecr.Repository(this, `${serviceName}Repo`, {
-      repositoryName: `dog-keeper-${environment}-${serviceName}`,
+      repositoryName: `dog-keeper-${environment}/${serviceName}`,
       imageTagMutability: ecr.TagMutability.IMMUTABLE,
       imageScanOnPush: true,
       encryption: ecr.RepositoryEncryption.AES_256,

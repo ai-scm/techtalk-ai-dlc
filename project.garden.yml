@@ -39,15 +39,22 @@ providers:
     namespace: dog-keeper-test
     context: arn:aws:eks:us-east-1:891377180652:cluster/dog-keeper-test-eks
     buildMode: kaniko
+    kaniko:
+      namespace: dog-keeper-test
+      extraFlags:
+        - --cache=true
     deploymentRegistry:
       hostname: 891377180652.dkr.ecr.us-east-1.amazonaws.com
       namespace: dog-keeper-test
+    imagePullSecrets:
+      - name: ecr-registry-credentials
+        namespace: dog-keeper-test
 
 ---
 kind: Deploy
 name: db
 type: helm
-description: Deploy a PostgreSQL database for local development
+description: Deploy a PostgreSQL database
 spec:
   chart:
     name: postgresql
@@ -66,7 +73,7 @@ spec:
       postgresPassword: ${var.postgresPassword}
     primary:
       persistence:
-        enabled: true
+        enabled: "${environment.name == 'local' ? true : false}"
         size: 1Gi
       resources:
         limits:
