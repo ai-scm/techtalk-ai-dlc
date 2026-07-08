@@ -441,7 +441,7 @@ export class PipelineConstruct extends Construct {
               'export PATH=$HOME/.garden/bin:$PATH',
               '',
               '# Ensure admin SSO role has cluster access',
-              'kubectl get configmap aws-auth -n kube-system -o json | python3 -c "import json,sys; cm=json.load(sys.stdin); roles=cm.get(\'data\',{}).get(\'mapRoles\',\'\'); entry=\'arn:aws:iam::891377180652:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_PS-CloudSeniorEngineerAccess_4afeb42c0f0110a3\'; cm.setdefault(\'data\',{}); cm[\'data\'][\'mapRoles\']=(roles if entry in roles else roles+chr(10)+\'- rolearn: \'+entry+chr(10)+\'  username: admin-sso\'+chr(10)+\'  groups:\'+chr(10)+\'  - system:masters\'+chr(10)); json.dump(cm,sys.stdout)" | kubectl apply -f - || echo "Warning: Could not update aws-auth"',
+              'kubectl get configmap aws-auth -n kube-system -o json | python3 -c "import json,sys; cm=json.load(sys.stdin); roles=cm.get(\'data\',{}).get(\'mapRoles\',\'\'); entry=\'arn:aws:iam::891377180652:role/AWSReservedSSO_PS-CloudSeniorEngineerAccess_4afeb42c0f0110a3\'; cm.setdefault(\'data\',{}); cm[\'data\'][\'mapRoles\']=(roles if entry in roles else roles+chr(10)+\'- rolearn: \'+entry+chr(10)+\'  username: admin-sso\'+chr(10)+\'  groups:\'+chr(10)+\'  - system:masters\'+chr(10)); json.dump(cm,sys.stdout)" | kubectl apply -f - || echo "Warning: Could not update aws-auth"',
               '',
               '# Deploy to test environment using Garden',
               'garden deploy --env test --yes',
