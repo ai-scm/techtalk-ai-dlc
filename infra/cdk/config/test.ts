@@ -29,7 +29,7 @@ export const testConfig: EnvironmentConfig = {
     namespace: 'dog-keeper-test',
     adminRoleArn: 'arn:aws:iam::891377180652:role/AWSReservedSSO_PS-CloudSeniorEngineerAccess_4afeb42c0f0110a3',
   },
-
+  
   database: {
     type: 'in-cluster',
   },

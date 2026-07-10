@@ -108,7 +108,7 @@ export class EksConstruct extends Construct {
     });
 
     // Create application namespace
-    this.cluster.addManifest('AppNamespace', {
+    const appNamespace = this.cluster.addManifest('AppNamespace', {
       apiVersion: 'v1',
       kind: 'Namespace',
       metadata: {
@@ -288,7 +288,7 @@ export class EksConstruct extends Construct {
     });
 
     // Create Kubernetes Service Account for application pods
-    this.cluster.addManifest('AppServiceAccount', {
+    const appServiceAccount = this.cluster.addManifest('AppServiceAccount', {
       apiVersion: 'v1',
       kind: 'ServiceAccount',
       metadata: {
@@ -299,6 +299,7 @@ export class EksConstruct extends Construct {
         },
       },
     });
+    appServiceAccount.node.addDependency(appNamespace);
   }
 
   /**
